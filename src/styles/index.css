@@ -1,0 +1,157 @@
+@import 'tailwindcss';
+
+/*
+  FUPRE CSE design tokens
+  ------------------------------------------------------------------
+  Green is FUPRE-inspired, not the official brand value. When official
+  brand colours are supplied, change them here only.
+*/
+@theme {
+  --color-*: initial;
+
+  --color-white: #ffffff;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  /* Institutional green */
+  --color-green-950: #0a2c1c;
+  --color-green-900: #0e3b25;
+  --color-green-800: #134a2f;
+  --color-green-700: #1a5e3c;
+  --color-green-600: #20744a;
+  --color-green-100: #dbe8df;
+  --color-green-50: #eef4f0;
+
+  /* Charcoal and neutrals (cool, slightly green-grey — not cream) */
+  --color-ink: #1f2522;
+  --color-charcoal: #2b312e;
+  --color-slate: #4a524e;
+  --color-muted: #616a65;
+  --color-rule: #d3dad5;
+  --color-rule-strong: #b7c1bb;
+  --color-paper: #f2f4f2;
+
+  /* Muted caution gold — accents on dark, rules on light */
+  --color-gold: #c9a233;
+  --color-gold-soft: #e6d397;
+  --color-gold-ink: #6f560f;
+
+  /* Status */
+  --color-danger: #a8321f;
+  --color-danger-bg: #fbeeec;
+  --color-caution-bg: #fbf5e2;
+
+  --font-display: 'Barlow Semi Condensed', 'Arial Narrow', system-ui, sans-serif;
+  --font-sans: 'Source Sans 3 Variable', 'Source Sans 3', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --radius-sm: 2px;
+  --radius: 4px;
+
+  --breakpoint-xs: 23.75rem;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 5rem;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    color: var(--color-ink);
+    background: var(--color-white);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    line-height: 1.1;
+    letter-spacing: -0.005em;
+    color: inherit;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-gold);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background: var(--color-gold-soft);
+    color: var(--color-ink);
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+@layer components {
+  /* Visible marker for content awaiting institutional confirmation.
+     Intentionally conspicuous so placeholders never ship unnoticed. */
+  .tbd {
+    background: var(--color-caution-bg);
+    color: var(--color-gold-ink);
+    border-bottom: 2px dashed var(--color-gold);
+    padding: 0 0.2em;
+    font-style: normal;
+  }
+
+  /* Short gold rule used above section headings */
+  .section-rule {
+    display: block;
+    width: 2.5rem;
+    height: 4px;
+    background: var(--color-gold);
+    margin-bottom: 1rem;
+  }
+
+  .prose-body > * + * {
+    margin-top: 1em;
+  }
+
+  .link {
+    color: var(--color-green-700);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+  .link:hover {
+    color: var(--color-green-900);
+    text-decoration-thickness: 2px;
+  }
+}
+
+/* The single orchestrated motion moment: programme ladder steps rise on load */
+@keyframes step-rise {
+  from { transform: translateY(12px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.animate-step {
+  animation: step-rise 520ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@layer components {
+  .doc-body > * + * { margin-top: 0.9em; }
+  .doc-body ul { list-style: disc; padding-left: 1.25rem; }
+  .doc-body ul > li + li { margin-top: 0.35em; }
+  .doc-body h3 { font-size: 1.25rem; font-weight: 600; color: var(--color-green-950); margin-top: 1.4em; }
+  .doc-body a { color: var(--color-green-700); text-decoration: underline; text-underline-offset: 3px; }
+}
