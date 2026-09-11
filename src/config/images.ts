@@ -57,17 +57,17 @@ export const images = {
     height: 444,
   },
   homePractical: {
-    src: '',
+    src: '/assets/images/student.png',
     alt: 'Practical safety training at an industrial facility',
     brief: 'Practical training — inspection, PPE demonstration or equipment check.',
   },
   homeCareers: {
-    src: '',
+    src: '/assets/images/carrer.png',
     alt: 'Centre for Safety Education graduate wearing personal protective equipment',
     brief: 'CSE graduate in PPE on site.',
   },
   aboutHeader: {
-    src: '',
+    src: '/assets/images/homeabout.png',
     alt: 'Federal University of Petroleum Resources, Effurun campus',
     brief: 'FUPRE campus or the Old TETFund Building.',
   },
