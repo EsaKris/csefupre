@@ -77,7 +77,7 @@ export const images = {
     brief: 'Classroom or lecture session at CSE.',
   },
   coursesHeader: {
-    src: '',
+    src: '/assets/images/book.png',
     alt: 'Participants in a professional safety course',
     brief: 'Short-course participants — e.g. H₂S or confined space training.',
   },
@@ -87,7 +87,7 @@ export const images = {
     brief: 'Safety officer conducting an inspection with a checklist.',
   },
   contactHeader: {
-    src: '',
+    src: '/assets/images/contact.png',
     alt: 'Old TETFund Building, Federal University of Petroleum Resources',
     brief: 'Exterior of the Old TETFund Building, FUPRE.',
   },
