@@ -82,7 +82,7 @@ export const images = {
     brief: 'Short-course participants — e.g. H₂S or confined space training.',
   },
   careersHeader: {
-    src: '',
+    src: '/assets/images/carrer.png',
     alt: 'Safety officer conducting a site inspection',
     brief: 'Safety officer conducting an inspection with a checklist.',
   },
