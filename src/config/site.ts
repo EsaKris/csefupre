@@ -31,8 +31,8 @@ export const site = {
     ],
     address: ['Old TETFund Building', 'Federal University of Petroleum Resources (FUPRE)'],
     website: {
-      display: 'fupre.edu.ng/center-for-safety-education',
-      href: 'https://fupre.edu.ng/center-for-safety-education',
+      display: 'fupre.edu.ng/',
+      href: 'https://fupre.edu.ng/',
     },
     /** Google Maps embed URL for the contact page. Leave empty until the location is confirmed. */
     mapEmbedUrl: '',
