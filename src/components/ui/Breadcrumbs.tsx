@@ -1,9 +1,18 @@
-import { Link } from 'react-router'
+import { Link, useLocation } from 'react-router'
+import { useStructuredData, breadcrumbList } from '../../lib/structuredData'
 
 export type Crumb = { label: string; to?: string }
 
 export function Breadcrumbs({ items, tone = 'light' }: { items: Crumb[]; tone?: 'light' | 'dark' }) {
+  const { pathname } = useLocation()
   const all: Crumb[] = [{ label: 'Home', to: '/' }, ...items]
+
+  // The visible trail is the single source of truth for BreadcrumbList — they can never disagree.
+  useStructuredData(
+    'breadcrumbs',
+    breadcrumbList(all.map((c, i) => ({ label: c.label, path: i === all.length - 1 ? pathname : c.to }))),
+  )
+
   const linkClass = tone === 'dark' ? 'text-green-100 hover:text-white' : 'text-green-700 hover:text-green-950'
   const currentClass = tone === 'dark' ? 'text-white' : 'text-ink'
   const sepClass = tone === 'dark' ? 'text-white/40' : 'text-rule-strong'

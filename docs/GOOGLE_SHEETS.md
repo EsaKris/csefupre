@@ -76,6 +76,28 @@ Redeploy the site after adding variables.
 Paste the new `Code.gs`, save, then **Deploy → Manage deployments → ✎ Edit → Version: New version → Deploy**.
 Editing the existing deployment keeps the same URL, so Vercel needs no change.
 
+## 8. Set up the hourly abandoned-payment check
+
+Application submissions and enquiries work as soon as steps 1–7 are done. Payments need one more
+step — the hourly check that catches applicants who start paying and never come back. This is
+covered in **`docs/PAYSTACK.md` §5**, since it needs a Vercel environment variable
+(`RECONCILE_SECRET`) alongside the Script properties. Come back here once that's done.
+
+## 9. Verify everything is ready
+
+Run this any time — right after setup, or later if something seems off.
+
+1. In the Apps Script editor, choose **`verifySetup`** from the function dropdown and click **Run**.
+2. Open **Executions** (left sidebar) or **View → Logs** and read the output. It checks:
+   - `SHARED_SECRET` is set and long enough
+   - all three sheets exist with every expected column header
+   - `RECONCILE_URL` and `RECONCILE_SECRET` are set (§8)
+   - the hourly payment-check trigger is installed exactly once
+3. Fix anything marked ❌, run it again, and don't consider the Sheet ready until every line is ✅.
+
+`verifySetup` never prints secret values — only whether each one is set and how many
+characters long, so it's safe to read over someone's shoulder or paste into a support request.
+
 ## Rotating the secret
 
 1. Generate a new secret.

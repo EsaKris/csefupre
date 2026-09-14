@@ -7,7 +7,11 @@ import { Container } from '../components/ui/Container'
 import { ButtonAnchor } from '../components/ui/Button'
 import { EnquiryForm } from '../components/forms/EnquiryForm'
 
-const mapsSearch = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent('Federal University of Petroleum Resources, Effurun')}`
+const schoolQuery = 'Federal University of Petroleum Resources, Effurun'
+const mapsSearch = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(schoolQuery)}`
+// No-API-key embed — works out of the box. If you later get a Google Maps
+// embed API key and set `contact.mapEmbedUrl` in site config, that takes priority.
+const defaultMapEmbedUrl = `https://www.google.com/maps?q=${encodeURIComponent(schoolQuery)}&output=embed`
 
 function ContactCard({ icon: Icon, title, children }: { icon: typeof Mail; title: string; children: React.ReactNode }) {
   return (
@@ -30,6 +34,7 @@ export default function Contact() {
   })
 
   const { contact } = site
+  const mapEmbedUrl = contact.mapEmbedUrl || defaultMapEmbedUrl
 
   return (
     <>
@@ -83,25 +88,22 @@ export default function Contact() {
 
           <div className="mt-8">
             <h3 className="sr-only">Map</h3>
-            {contact.mapEmbedUrl ? (
-              <iframe
-                title="Map showing the Centre for Safety Education, FUPRE"
-                src={contact.mapEmbedUrl}
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                className="aspect-[4/3] w-full border border-rule"
-              />
-            ) : (
-              <div className="flex aspect-[4/3] w-full flex-col items-center justify-center gap-3 border border-dashed border-rule-strong bg-paper p-6 text-center">
-                <MapPin aria-hidden="true" className="h-8 w-8 text-green-700" strokeWidth={1.5} />
-                <p className="text-[0.9375rem] text-slate">
-                  Map embed to be added once the building location is confirmed.
-                </p>
-                <a href={mapsSearch} target="_blank" rel="noopener noreferrer" className="link font-semibold">
-                  Find FUPRE on Google Maps
-                </a>
-              </div>
-            )}
+            <iframe
+              title="Map showing the Centre for Safety Education, FUPRE"
+              src={mapEmbedUrl}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              className="aspect-[4/3] w-full border border-rule"
+            />
+            
+            <a
+              href={mapsSearch}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="link mt-2 inline-block text-sm font-semibold"
+            >
+              Open in Google Maps
+            </a>
           </div>
         </section>
 

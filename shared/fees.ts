@@ -23,7 +23,7 @@ import type { CourseSlug, ProgrammeSlug } from './catalog.js'
 export const CURRENCY = 'NGN' as const
 
 /** Set to false only after every amount below has been replaced with an approved figure. */
-export const FEES_ARE_PLACEHOLDERS = false
+export const FEES_ARE_PLACEHOLDERS = true
 
 /**
  * Application fee for each programme — CONFIRMED figures.

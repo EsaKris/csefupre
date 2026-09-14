@@ -17,10 +17,11 @@ operations run in Vercel serverless functions (`/api`) — never in browser code
 | 3 | Multi-step application wizard, shared validation schema, per-item fee configuration, tests | **Done** |
 | 4 | Google Apps Script data layer, Sheet structure, `/api/applications` and `/api/enquiries`, email module, local dev API | **Done** |
 | 5 | Paystack initialize / verify / webhook / reconcile, payment pages, outcome pages | **Done** |
-| 6 | Security headers + CSP, prerendering, sitemap/robots, structured data, full deployment docs | Next |
+| 6 | Security headers + CSP, prerendering, sitemap/robots, structured data, full deployment docs | **Done** |
 
-Routes not yet built render a clearly marked **"Page scheduled for Phase N"** notice
-(`src/pages/PendingPage.tsx`) so navigation can be reviewed. That file is deleted before launch.
+The project is feature-complete against the original brief. Everything remaining is
+content (real photos/logos where still placeholders, official policy text, confirmed course
+fees) — see `docs/DEPLOYMENT.md` §7 for the exact go-live checklist.
 
 ---
 
@@ -51,7 +52,28 @@ python3 tests/e2e/integration_phase4.py http://localhost:4190     # applications
 python3 tests/e2e/integration_phase5.py http://localhost:4190     # full payment journey via the fake Paystack checkout
 ```
 
+Security headers, CSP enforcement, prerendered content and structured data — needs a build with
+`public/seo/*.json` present (see "Security, SEO and deployment" below):
+
+```bash
+npx tsx scripts/serve-with-vercel-headers.ts 4200 &   # replays the real vercel.json rules
+python3 tests/e2e/integration_phase6.py http://localhost:4200
+```
+
 ---
+
+## Environment variables
+
+See `.env.example` for the full list with comments. Full setup instructions for each — where
+each value comes from and how to generate secrets — are in `docs/DEPLOYMENT.md` §3.
+
+Quick summary: `VITE_SITE_URL` is the only frontend-safe variable (bundled into the browser —
+it's just the canonical domain, not a secret). Every other variable is server-only and must
+never be prefixed `VITE_`. `GOOGLE_SHEETS_ENDPOINT`/`GOOGLE_SHEETS_SECRET`,
+`APP_SIGNING_SECRET`, and `PAYSTACK_SECRET_KEY` are required for the site to function.
+`RECONCILE_SECRET` is required for the hourly abandoned-payment check. `EMAIL_PROVIDER_API_KEY`/
+`EMAIL_FROM`/`ADMISSIONS_NOTIFY_EMAIL` are optional — without them the site works normally and
+automated emails are simply skipped.
 
 ## Project structure
 
@@ -64,9 +86,9 @@ shared/            Used by BOTH browser and server: validation schemas, catalog 
 api/               Vercel serverless function entry points (thin wrappers)
 server/            Server-only code: handlers, Sheets client, tokens, email, rate limiting
 apps-script/       Google Apps Script data layer (paste into the Sheet's script editor)
-scripts/           Local dev API server and the Apps Script test harness
+scripts/           Dev API server, Apps Script test harness, SEO generation, header simulator
 tests/             Unit tests (node:test) and browser e2e tests (tests/e2e)
-docs/              Asset guide and, later, Sheets/Paystack/deployment docs
+docs/              ASSETS, GOOGLE_SHEETS, PAYSTACK, SECURITY and DEPLOYMENT guides
 ```
 
 ## The application form
@@ -121,11 +143,11 @@ See `docs/ASSETS.md` for the full list of slots and recommended sizes. In short:
 
 ## Before launch: placeholder sweep
 
-Placeholders are visible on purpose so nothing ships unnoticed. Before going live:
+Placeholders are visible on purpose so nothing ships unnoticed. The full go-live checklist is in
+**`docs/DEPLOYMENT.md` §7** — this is the short version for a quick local scan:
 
 - Search for `<Tbd>` — content awaiting confirmation from the Centre.
 - Search `src/config/images.ts` for `src: ''` — images and logos not yet supplied.
-- Confirm `src/pages/PendingPage.tsx` is no longer imported, then delete it.
 - Replace sample fees in `shared/fees.ts` and set `FEES_ARE_PLACEHOLDERS = false`.
 - Confirm `site.admissions.applicationsOpen` reflects the actual admission cycle.
 - Remove the "Draft for institutional review" notices on Privacy Policy and Terms once approved.
@@ -179,7 +201,30 @@ proves nothing by itself.
 Full setup (Paystack account, webhook URL, the hourly abandoned-payment trigger, going live):
 **`docs/PAYSTACK.md`**.
 
-## Known dependencies on later phases
+## Security, SEO and deployment
 
-- Security headers, Content-Security-Policy, prerendering for social link previews, sitemap.xml, robots.txt and structured data (Phase 6).
-- Full deployment guide: Vercel setup, WhoGoHost DNS, environment variable checklist, go-live steps (Phase 6).
+Everything below is done — pointers to where, and to the full docs.
+
+**Security headers & CSP** — set in `vercel.json`: HSTS, X-Frame-Options, Referrer-Policy,
+Permissions-Policy, Cross-Origin-Opener-Policy on every route, plus a strict
+Content-Security-Policy (`script-src 'self'` only) on all non-API routes. Full rationale,
+the one deliberate CSP trade-off, and how to verify it yourself: **`docs/SECURITY.md`**.
+
+**Prerendering for social/search** — per-route `<title>`, meta description, Open Graph tags,
+canonical URL and JSON-LD structured data (Organization, BreadcrumbList, Course) are baked into
+static HTML at build time, so WhatsApp/Facebook/X link previews and search engines see real
+content without executing JavaScript. Two scripts make this work:
+- `scripts/extract-seo.ts` — run locally against a preview server whenever page content changes;
+  writes small JSON fragments to `public/seo/` (commit these).
+- `scripts/inject-seo.ts` — runs automatically as part of `npm run build`; pure Node, no browser,
+  so it can't fail on Vercel's build machine. Stitches the committed fragments into
+  `dist/<route>/index.html` for every indexable page.
+
+Routes are listed once in `scripts/routes.ts`, shared by the sitemap generator and both SEO
+scripts, so they can't drift out of sync.
+
+**Sitemap & robots** — generated at build time from `scripts/routes.ts` into
+`public/sitemap.xml` and `public/robots.txt` (needs `VITE_SITE_URL` set — see below).
+
+**Deployment** — Vercel project setup, every environment variable and where it comes from,
+connecting the WhoGoHost domain, and the full go-live checklist: **`docs/DEPLOYMENT.md`**.

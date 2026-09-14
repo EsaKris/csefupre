@@ -13,6 +13,7 @@ import { ProgrammeLevelIndicator } from '../content/ProgrammeLevelIndicator'
 import { Tbd } from '../ui/Tbd'
 import { Fee } from '../ui/Fee'
 import { APPLICATION_FEES } from '../../../shared/fees'
+import { useStructuredData, courseData } from '../../lib/structuredData'
 
 export function applyPath(p: Programme) {
   return `/apply?programme=${p.slug}`
@@ -158,19 +159,23 @@ export function PendingList({ label }: { label: string }) {
   )
 }
 
-export function ProgrammeLayout({ programme, children }: { programme: Programme; children: ReactNode }) {
+export function ProgrammeLayout({ programme: p, children }: { programme: Programme; children: ReactNode }) {
+  useStructuredData(
+    'course',
+    courseData({ path: p.path, name: p.title, description: p.summary, durationMonths: p.durationMonths, feeNaira: APPLICATION_FEES[p.slug] }),
+  )
   return (
     <>
-      <ProgrammeHeader programme={programme} />
+      <ProgrammeHeader programme={p} />
       <Container className="grid gap-12 py-14 sm:py-16 lg:grid-cols-12">
         <div className="lg:col-span-8">{children}</div>
         <div className="lg:col-span-4">
-          <AtAGlance programme={programme} />
+          <AtAGlance programme={p} />
         </div>
       </Container>
       <CTASection
-        heading={`Apply for the ${programme.shortTitle}`}
-        applyTo={applyPath(programme)}
+        heading={`Apply for the ${p.shortTitle}`}
+        applyTo={applyPath(p)}
         applyLabel="Apply Now"
       />
     </>

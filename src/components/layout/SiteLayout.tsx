@@ -3,6 +3,7 @@ import { Outlet, ScrollRestoration } from 'react-router'
 import { TopBar } from './TopBar'
 import { Navbar } from './Navbar'
 import { Footer } from './Footer'
+import { useStructuredData, organizationData } from '../../lib/structuredData'
 
 function RouteLoading() {
   return (
@@ -13,6 +14,8 @@ function RouteLoading() {
 }
 
 export function SiteLayout() {
+  useStructuredData('org', organizationData())
+
   return (
     <>
       <a

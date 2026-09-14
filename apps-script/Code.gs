@@ -515,6 +515,67 @@ function installReconcileTrigger() {
  * Creates the Applications, Payments and Enquiries sheets with headers,
  * status dropdowns and text formatting. Safe to run more than once.
  */
+/**
+ * Run this LAST, after setupSheets() and installReconcileTrigger(), and again any time
+ * something seems wrong. Choose "verifySetup" from the function dropdown and click Run,
+ * then check the execution log (View → Logs, or Executions) for the results.
+ *
+ * Checks everything this script depends on: the shared secret, that all three sheets
+ * exist with their expected headers, the hourly payment-check trigger, and the
+ * reconcile properties it needs. Never prints secret VALUES, only whether they're set.
+ */
+function verifySetup() {
+  var lines = []
+  var pass = true
+  function check(label, ok, detail) {
+    lines.push((ok ? '✅ ' : '❌ ') + label + (detail ? ' — ' + detail : ''))
+    if (!ok) pass = false
+  }
+
+  var props = PropertiesService.getScriptProperties()
+  var secret = props.getProperty('SHARED_SECRET')
+  check('SHARED_SECRET is set and at least 32 characters', !!secret && secret.length >= 32, secret ? secret.length + ' characters' : 'not set')
+
+  var ss = SpreadsheetApp.getActiveSpreadsheet()
+  var sheetChecks = [
+    [CONFIG.SHEETS.APPLICATIONS, headersOf_(APPLICATION_COLUMNS)],
+    [CONFIG.SHEETS.PAYMENTS, PAYMENT_COLUMNS],
+    [CONFIG.SHEETS.ENQUIRIES, headersOf_(ENQUIRY_COLUMNS)],
+  ]
+  sheetChecks.forEach(function (pair) {
+    var name = pair[0]
+    var expected = pair[1]
+    var sheet = ss.getSheetByName(name)
+    if (!sheet) {
+      check('Sheet "' + name + '" exists', false, 'not found — run setupSheets')
+      return
+    }
+    var actualHeaders = sheet.getRange(1, 1, 1, Math.max(sheet.getLastColumn(), 1)).getValues()[0].map(String)
+    var missing = expected.filter(function (h) {
+      return actualHeaders.indexOf(h) === -1
+    })
+    check('Sheet "' + name + '" has all expected headers', missing.length === 0, missing.length ? 'missing: ' + missing.join(', ') : (actualHeaders.length + ' columns'))
+  })
+
+  var reconcileUrl = props.getProperty('RECONCILE_URL')
+  var reconcileSecret = props.getProperty('RECONCILE_SECRET')
+  check('RECONCILE_URL is set', !!reconcileUrl, reconcileUrl || 'not set — see docs/PAYSTACK.md §5')
+  check('RECONCILE_SECRET is set and at least 32 characters', !!reconcileSecret && reconcileSecret.length >= 32)
+
+  var triggers = ScriptApp.getProjectTriggers().filter(function (t) {
+    return t.getHandlerFunction() === 'reconcilePayments'
+  })
+  check('Hourly payment check is scheduled', triggers.length > 0, triggers.length ? triggers.length + ' trigger(s)' : 'run installReconcileTrigger()')
+  check('Exactly one hourly trigger (not duplicated)', triggers.length <= 1, triggers.length > 1 ? triggers.length + ' found — re-run installReconcileTrigger() to clean up' : '')
+
+  var authInfo = ScriptApp.getAuthorizationInfo(ScriptApp.AuthMode.FULL)
+  check('Script is authorized', authInfo.getAuthorizationStatus() === ScriptApp.AuthorizationStatus.NOT_REQUIRED || authInfo.getAuthorizationStatus() === ScriptApp.AuthorizationStatus.ENABLED)
+
+  var banner = pass ? '\n✅ ALL CHECKS PASSED — this Sheet is ready.\n' : '\n❌ SOME CHECKS FAILED — fix the items above before going live.\n'
+  console.log(banner + lines.join('\n') + '\n\nReminder: after fixing SHARED_SECRET here, update GOOGLE_SHEETS_SECRET in Vercel to match, and redeploy the site.')
+  return pass
+}
+
 function setupSheets() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   ss.setSpreadsheetTimeZone(CONFIG.TIMEZONE);

@@ -99,6 +99,8 @@ export function createAppsScriptHarness({ secret = 'x'.repeat(40) }: { secret?: 
     { get: (t, p) => (p in t ? t[p as string] : noop()) },
   )
 
+  const triggers: { handlerFunction: string }[] = []
+
   const context = vm.createContext({
     console,
     Date,
@@ -126,6 +128,26 @@ export function createAppsScriptHarness({ secret = 'x'.repeat(40) }: { secret?: 
         if (fmt !== 'yyyy') throw new Error('harness supports yyyy only')
         return new Intl.DateTimeFormat('en-GB', { timeZone: tz, year: 'numeric' }).format(d)
       },
+    },
+    UrlFetchApp: { fetch: () => ({ getResponseCode: () => 200, getContentText: () => '{}' }) },
+    ScriptApp: {
+      AuthMode: { FULL: 'FULL', LIMITED: 'LIMITED', NONE: 'NONE' },
+      AuthorizationStatus: { REQUIRED: 'REQUIRED', NOT_REQUIRED: 'NOT_REQUIRED', ENABLED: 'ENABLED' },
+      getAuthorizationInfo: () => ({ getAuthorizationStatus: () => 'ENABLED' }),
+      getProjectTriggers: () => triggers.map((t) => ({ getHandlerFunction: () => t.handlerFunction })),
+      deleteTrigger: (t: { getHandlerFunction: () => string }) => {
+        const i = triggers.findIndex((x) => x.handlerFunction === t.getHandlerFunction())
+        if (i !== -1) triggers.splice(i, 1)
+      },
+      newTrigger: (handlerFunction: string) => ({
+        timeBased: () => ({
+          everyHours: () => ({
+            create: () => {
+              triggers.push({ handlerFunction })
+            },
+          }),
+        }),
+      }),
     },
   })
 

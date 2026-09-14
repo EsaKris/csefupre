@@ -167,3 +167,46 @@ test('getPayment returns amount and programme for verification', () => {
   assert.equal(r.payment.programme, 'pgd')
   assert.equal(h.call('getPayment', { reference: 'nope' }).found, false)
 })
+
+test('verifySetup reports failure when nothing is configured', () => {
+  const h = createAppsScriptHarness({ secret: 'short' })
+  const result = h.run('verifySetup')
+  assert.equal(result, false)
+})
+
+test('verifySetup passes once sheets, secrets and the trigger are all in place', () => {
+  const h = createAppsScriptHarness()
+  h.run('setupSheets')
+  h.props.set('RECONCILE_URL', 'https://example.com/api/paystack/reconcile')
+  h.props.set('RECONCILE_SECRET', 'r'.repeat(40))
+  h.run('installReconcileTrigger')
+  assert.equal(h.run('verifySetup'), true)
+})
+
+test('installReconcileTrigger is idempotent (re-running does not duplicate the trigger)', () => {
+  const h = createAppsScriptHarness()
+  h.run('setupSheets')
+  h.props.set('RECONCILE_URL', 'https://example.com/api/paystack/reconcile')
+  h.props.set('RECONCILE_SECRET', 'r'.repeat(40))
+  h.run('installReconcileTrigger')
+  h.run('installReconcileTrigger')
+  h.run('installReconcileTrigger')
+  assert.equal(h.run('verifySetup'), true, 'still passes with exactly one trigger after repeated installs')
+})
+
+test('verifySetup catches a missing sheet header without failing the whole check', () => {
+  const h = createAppsScriptHarness()
+  h.run('setupSheets')
+  h.props.set('RECONCILE_URL', 'https://example.com/api/paystack/reconcile')
+  h.props.set('RECONCILE_SECRET', 'r'.repeat(40))
+  h.run('installReconcileTrigger')
+  const sheet = h.sheet('Applications')!
+  sheet.data[0][0] = 'Renamed By Mistake'
+  assert.equal(h.run('verifySetup'), false)
+})
+
+test('reconcilePayments (the Apps Script trigger) does nothing gracefully when unconfigured', () => {
+  const h = createAppsScriptHarness()
+  // Should not throw even though RECONCILE_URL/RECONCILE_SECRET are unset
+  h.run('reconcilePayments')
+})

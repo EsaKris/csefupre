@@ -52,6 +52,11 @@ export function usePageMeta({ title, description, path, index = true }: PageMeta
       const url = `${site.url}${path === '/' ? '/' : path}`
       setCanonical(url)
       setMeta('property', 'og:url', url)
+    } else {
+      // No confirmed domain yet — remove any canonical/og:url a previous prerendered
+      // build may have baked in, rather than silently leaving it stale.
+      document.head.querySelector('link[rel="canonical"]')?.remove()
+      document.head.querySelector('meta[property="og:url"]')?.remove()
     }
   }, [title, description, path, index])
 }

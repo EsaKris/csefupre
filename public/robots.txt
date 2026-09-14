@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /apply
+Disallow: /payment
+Disallow: /payment/status
+Disallow: /application-success
+Disallow: /application-payment-pending
+Disallow: /application-payment-failed
+
+Sitemap: https://your-domain-not-set.example/sitemap.xml
