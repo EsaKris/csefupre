@@ -165,11 +165,15 @@ export default function Apply() {
     setSubmitState('submitting')
     setSubmitError('')
     try {
-      const result = await postJson<SubmitApplicationResult>('/api/applications', {
-        ...values,
-        submissionId,
-        [HONEYPOT_FIELD]: honeypot,
-      })
+      const result = await postJson<SubmitApplicationResult>(
+        '/api/applications',
+        { ...values, submissionId, [HONEYPOT_FIELD]: honeypot },
+        // Google Apps Script can be slow on its first call after a deploy (cold start,
+        // sometimes 15-20s+). Give this specific submission extra patience so a slow
+        // Sheets write doesn't look like a failure to the applicant when it actually
+        // still succeeds a few seconds later.
+        { timeoutMs: 35000 },
+      )
       if (result.status === 'duplicate') {
         setReminderSent(result.reminderSent)
         setSubmitState('duplicate')

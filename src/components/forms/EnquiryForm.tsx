@@ -56,7 +56,7 @@ export function EnquiryForm() {
     setErrors({})
     setState('submitting')
     try {
-      await postJson('/api/enquiries', { ...parsed.data, [HONEYPOT_FIELD]: honeypot })
+      await postJson('/api/enquiries', { ...parsed.data, [HONEYPOT_FIELD]: honeypot }, { timeoutMs: 35000 })
       setState('sent')
       requestAnimationFrame(() => sentRef.current?.focus())
     } catch (err) {

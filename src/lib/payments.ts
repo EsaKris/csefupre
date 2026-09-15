@@ -6,15 +6,15 @@ import type {
 import { postJson } from './api'
 
 export function fetchSummaryByToken(resumeToken: string) {
-  return postJson<PaymentSummaryResult & { reason?: string }>('/api/payments/summary', { resumeToken })
+  return postJson<PaymentSummaryResult & { reason?: string }>('/api/payments/summary', { resumeToken }, { timeoutMs: 30000 })
 }
 
 export function fetchSummaryByLookup(applicationId: string, email: string) {
-  return postJson<PaymentSummaryResult>('/api/payments/summary', { applicationId, email })
+  return postJson<PaymentSummaryResult>('/api/payments/summary', { applicationId, email }, { timeoutMs: 30000 })
 }
 
 export function startPayment(resumeToken: string) {
-  return postJson<InitializePaymentResult>('/api/paystack/initialize', { resumeToken })
+  return postJson<InitializePaymentResult>('/api/paystack/initialize', { resumeToken }, { timeoutMs: 30000 })
 }
 
 export function verifyPayment(reference: string) {

@@ -1,4 +1,13 @@
 {
+  "functions": {
+    "api/applications.ts": { "maxDuration": 30 },
+    "api/enquiries.ts": { "maxDuration": 30 },
+    "api/payments/summary.ts": { "maxDuration": 30 },
+    "api/paystack/initialize.ts": { "maxDuration": 30 },
+    "api/paystack/verify.ts": { "maxDuration": 30 },
+    "api/paystack/webhook.ts": { "maxDuration": 30 },
+    "api/paystack/reconcile.ts": { "maxDuration": 60 }
+  },
   "rewrites": [
     { "source": "/((?!api/).*)", "destination": "/index.html" }
   ],

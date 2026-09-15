@@ -17,7 +17,7 @@ export type SheetsClient = {
 export function createHttpSheetsClient({
   endpoint,
   secret,
-  timeoutMs = 15000,
+  timeoutMs = 25000,
   fetchImpl = fetch,
 }: {
   endpoint: string
