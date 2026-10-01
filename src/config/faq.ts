@@ -37,8 +37,8 @@ export const faqGroups: FaqGroup[] = [
         question: 'Who can apply?',
         answer: [
           "Professional Diploma: five O'Level credit passes including Mathematics and English.",
-          "Postgraduate Diploma: a Bachelor's degree, or an HND from a recognized tertiary institution.",
-          "Master's: a Bachelor's degree with a minimum of Second Class (Lower Division), or an acceptable PGD.",
+          "Postgraduate Diploma: a Bachelor's degree in Social Science or Art, or an HND from a recognized tertiary institution.",
+          "Master's: a Bachelor's degree in the Sciences or Engineering, or a PGD.",
           "Ph.D.: a Master's degree in Health, Environment, Safety, or a related discipline.",
           'Applicants should confirm the latest official admission requirements with the Centre before submitting an application.',
         ],

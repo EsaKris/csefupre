@@ -38,11 +38,8 @@ function ProgrammeLadder() {
                   isTop ? 'hover:bg-gold-soft' : 'text-white hover:bg-green-950'
                 }`}
               >
-                <span className="flex items-baseline justify-between gap-3">
-                  <span className={`font-display text-sm font-semibold ${isTop ? 'text-green-700' : 'text-gold-soft'}`}>
-                    Level {p.level}
-                  </span>
-                  <span className={`text-sm ${isTop ? 'text-slate' : 'text-green-100'}`}>{formatDuration(p)}</span>
+                <span className={`block text-sm font-semibold ${isTop ? 'text-green-700' : 'text-gold-soft'}`}>
+                  {formatDuration(p)}
                 </span>
                 <span className="mt-2 block font-display text-[1.5rem] font-semibold leading-tight lg:text-[1.625rem]">
                   {p.shortTitle}

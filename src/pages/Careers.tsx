@@ -83,7 +83,7 @@ export default function Careers() {
             {programmes.map((p) => (
               <li key={p.slug} className="border-b border-rule py-6 md:border-b-0 md:border-r md:px-6 md:first:pl-0 md:last:border-r-0">
                 <p className="font-display text-sm font-semibold text-green-700">
-                  Level {p.level} <span className="font-normal text-muted">/ {formatDuration(p)}</span>
+                  {formatDuration(p)}
                 </p>
                 <h3 className="mt-1 text-[1.375rem] font-semibold leading-tight text-green-950">
                   <Link to={p.path} className="hover:underline">

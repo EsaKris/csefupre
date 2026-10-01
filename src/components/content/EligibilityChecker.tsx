@@ -21,9 +21,15 @@ const options: Option[] = [
     note: "The published requirement for the Professional Diploma is five O'Level credit passes including Mathematics and English.",
   },
   { value: 'hnd', label: 'Higher National Diploma (HND)', matches: ['pgd'] },
-  { value: 'bsc-2-2', label: "Bachelor's degree: Second Class (Lower Division) or higher", matches: ['pgd', 'masters'] },
-  { value: 'bsc-below', label: "Bachelor's degree: Third Class or Pass", matches: ['pgd'] },
-  { value: 'pgd', label: 'Postgraduate Diploma (PGD)', matches: ['masters'], note: "The Master's requirement refers to an acceptable PGD. The Centre confirms whether a PGD is acceptable." },
+  { value: 'bsc-social-art', label: "Bachelor's degree in Social Science or Art", matches: ['pgd'] },
+  { value: 'bsc-science-eng', label: "Bachelor's degree in the Sciences or Engineering", matches: ['masters'] },
+  {
+    value: 'bsc-other',
+    label: "Bachelor's degree in another discipline",
+    matches: [],
+    note: "The published PGD requirement is a Bachelor's degree in Social Science or Art, or an HND. The Master's requirement is a Bachelor's degree in the Sciences or Engineering, or a PGD.",
+  },
+  { value: 'pgd', label: 'Postgraduate Diploma (PGD)', matches: ['masters'] },
   { value: 'msc-related', label: "Master's degree in Health, Environment, Safety, or a related discipline", matches: ['phd'] },
   {
     value: 'msc-other',

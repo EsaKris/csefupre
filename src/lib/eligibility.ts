@@ -5,7 +5,7 @@ import type { Programme } from '../config/programmes'
  * published entry requirement. It never prevents submission: the Centre
  * assesses every application against its official requirements.
  */
-export function requirementWarning(programme: Programme | undefined, qualification: string, grade: string): string | null {
+export function requirementWarning(programme: Programme | undefined, qualification: string): string | null {
   if (!programme || !qualification || qualification === 'Other') return null
   const low = ["O'Level (WAEC, NECO or NABTEB)", 'OND / National Diploma']
   let mismatch = false
@@ -16,9 +16,6 @@ export function requirementWarning(programme: Programme | undefined, qualificati
       break
     case 'masters':
       if ([...low, 'Higher National Diploma (HND)'].includes(qualification)) mismatch = true
-      if (qualification === "Bachelor's degree" && ['Third Class', 'Pass'].includes(grade)) {
-        mismatch = true
-      }
       break
     case 'phd':
       mismatch = !["Master's degree", 'Doctorate'].includes(qualification)

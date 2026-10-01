@@ -75,19 +75,19 @@ export const programmes: Programme[] = [
     field: FIELD,
     durationMonths: 12,
     summary: 'Designed for graduates wishing to develop advanced professional skills in HSE Management.',
-    entryShort: "Bachelor's degree or HND",
+    entryShort: "Bachelor's (Social Science or Art) or HND",
     requirements: {
       items: [
-        "A Bachelor's Degree",
+        "A Bachelor's Degree in Social Science or Art",
         'A Higher National Diploma (HND) from a recognized tertiary institution',
       ],
       alternatives: true,
     },
     audience:
-      "Holders of a Bachelor's degree or HND who wish to develop advanced professional skills in HSE management.",
+      "Holders of a Bachelor's degree in Social Science or Art, or an HND, who wish to develop advanced professional skills in HSE management.",
     focus: ['HSE management', 'Health', 'Environment', 'Safety', 'Security'],
     relevance:
-      "The PGD develops advanced professional skills in HSE management. An acceptable PGD is also one of the entry routes into the Master's programme.",
+      "The PGD develops advanced professional skills in HSE management. A PGD is also one of the entry routes into the Master's programme.",
     objectives: null,
     modules: null,
   },
@@ -101,11 +101,11 @@ export const programmes: Programme[] = [
     durationMonths: 18,
     summary:
       'An advanced programme for professionals seeking leadership positions in HSE management, policy, and research.',
-    entryShort: "Bachelor's (2:2 minimum) or PGD",
+    entryShort: "Bachelor's (Sciences or Engineering) or PGD",
     requirements: {
       items: [
-        "A Bachelor's Degree with a minimum of Second Class (Lower Division)",
-        'An acceptable Postgraduate Diploma (PGD)',
+        "A Bachelor's Degree in the Sciences or Engineering",
+        'A Postgraduate Diploma (PGD)',
       ],
       alternatives: true,
     },

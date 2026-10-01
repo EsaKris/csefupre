@@ -25,8 +25,7 @@ export function ProgrammeHeader({ programme }: { programme: Programme }) {
     <header className="border-b-4 border-gold bg-green-900 text-white">
       <Container className="py-10 sm:py-14">
         <Breadcrumbs items={[{ label: 'Programmes', to: '/programmes' }, { label: p.abbreviation ?? p.shortTitle }]} tone="dark" />
-        <p className="mt-7 font-display text-lg font-semibold text-gold-soft">Level {p.level} of 4</p>
-        <h1 className="mt-2 max-w-[26ch] text-[2.25rem] font-semibold leading-[1.05] sm:text-[3.25rem]">{p.title}</h1>
+        <h1 className="mt-7 max-w-[26ch] text-[2.25rem] font-semibold leading-[1.05] sm:text-[3.25rem]">{p.title}</h1>
         <p className="mt-5 max-w-[42rem] text-lg leading-relaxed text-green-100">{p.summary}</p>
 
         <dl className="mt-8 grid max-w-[34rem] grid-cols-1 gap-px bg-white/15 xs:grid-cols-2">

@@ -15,7 +15,7 @@ export default function PGD() {
   usePageMeta({
     title: programme.title,
     path: programme.path,
-    description: `${programme.title} (PGD) at the Centre for Safety Education, FUPRE. 12 months. Entry: a Bachelor's degree or HND.`,
+    description: `${programme.title} (PGD) at the Centre for Safety Education, FUPRE. 12 months. Entry: a Bachelor's degree in Social Science or Art, or an HND.`,
   })
 
   return (

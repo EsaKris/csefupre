@@ -22,10 +22,7 @@ export function RequirementList({ programme }: { programme: Programme }) {
 export function RequirementCard({ programme, showLink = true, headingLevel: H = 'h3' }: Props) {
   return (
     <article className="flex h-full flex-col border border-rule border-t-4 border-t-green-800 bg-white p-6">
-      <div className="flex items-baseline justify-between gap-4">
-        <p className="font-display text-sm font-semibold text-green-700">Level {programme.level}</p>
-        <p className="text-sm text-muted">{formatDuration(programme)}</p>
-      </div>
+      <p className="font-display text-sm font-semibold text-green-700">{formatDuration(programme)}</p>
       <H className="mt-2 text-[1.5rem] font-semibold text-green-950">{displayName(programme)}</H>
       <div className="mt-4 flex-1 text-[1.0625rem] leading-relaxed text-ink">
         <p className="mb-2 text-sm font-semibold text-muted">Entry requirement</p>

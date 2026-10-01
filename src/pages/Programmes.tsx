@@ -49,7 +49,6 @@ export default function Programmes() {
                 {programmes.map((p) => (
                   <tr key={p.slug} className="border-b border-rule align-top">
                     <th scope="row" className="py-5 pr-6">
-                      <span className="block font-display text-sm font-semibold text-green-700">Level {p.level}</span>
                       <a href={`#${p.slug}`} className="font-display text-[1.375rem] font-semibold text-green-950 hover:underline">
                         {displayName(p)}
                       </a>
@@ -90,7 +89,7 @@ export default function Programmes() {
             <Container className="grid gap-10 py-14 sm:py-16 lg:grid-cols-12">
               <div className="lg:col-span-7">
                 <p className="font-display text-lg font-semibold text-green-700">
-                  Level {p.level} <span className="text-muted">/</span> {formatDuration(p)}
+                  {formatDuration(p)}
                 </p>
                 <h2 id={`${p.slug}-title`} className="mt-2 text-[2rem] font-semibold leading-tight text-green-950 sm:text-[2.5rem]">
                   {p.title}

@@ -23,9 +23,7 @@ export function ProgrammeLevelIndicator({ current }: { current: number }) {
                   }`}
                   aria-hidden="true"
                 />
-                <span className={`text-xs ${isCurrent ? 'font-semibold text-white' : 'text-green-100'}`}>
-                  <span className="sr-only">{p.shortTitle}, </span>Level {p.level}
-                </span>
+                <span className="sr-only">{p.shortTitle}</span>
               </Link>
             </li>
           )

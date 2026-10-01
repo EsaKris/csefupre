@@ -116,10 +116,7 @@ export function ProgrammeStep({ field }: StepProps) {
               <span className="block font-display text-[1.375rem] font-semibold leading-tight text-green-950">{p.shortTitle}</span>
               <span className="mt-1 block text-[0.9375rem] text-slate">Entry: {p.entryShort}</span>
             </span>
-            <span className="text-[0.9375rem] text-muted sm:text-right">
-              Level {p.level}
-              <span className="block">{formatDuration(p)}</span>
-            </span>
+            <span className="text-[0.9375rem] text-muted sm:text-right">{formatDuration(p)}</span>
           </label>
         ))}
       </div>
@@ -143,7 +140,7 @@ export function EducationStep({ field, values }: StepProps) {
   const f = field
   const q = values.highestQualification
   const programme = programmes.find((p) => p.slug === values.programme)
-  const warning = requirementWarning(programme, q, values.grade)
+  const warning = requirementWarning(programme, q)
   const thisYear = new Date().getFullYear()
 
   return (

@@ -17,7 +17,7 @@ export default function Masters() {
   usePageMeta({
     title: programme.title,
     path: programme.path,
-    description: `${programme.title} at the Centre for Safety Education, FUPRE. 18 months. Entry: a Bachelor's degree (minimum Second Class Lower) or an acceptable PGD.`,
+    description: `${programme.title} at the Centre for Safety Education, FUPRE. 18 months. Entry: a Bachelor's degree in the Sciences or Engineering, or a PGD.`,
   })
 
   return (
